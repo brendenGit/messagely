@@ -2,7 +2,6 @@ const db = require("../db");
 const User = require("../models/user");
 const Message = require("../models/message");
 
-
 describe("Test User class", function () {
   beforeEach(async function () {
     await db.query("DELETE FROM messages");
@@ -110,7 +109,7 @@ describe("Test messages part of User class", function () {
       body: "u1-to-u2",
       sent_at: expect.any(Date),
       read_at: null,
-      to_user: {
+      to_user: { 
         username: "test2",
         first_name: "Test2",
         last_name: "Testy2",
