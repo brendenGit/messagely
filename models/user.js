@@ -38,7 +38,6 @@ class User {
 
     if (user) {
       if (await bcrypt.compare(password, user.password) === true) {
-        this.updateLoginTimestamp(username);
         return true;
       }
     }
@@ -50,7 +49,7 @@ class User {
 
   static async updateLoginTimestamp(username) {
 
-    const result = await db.query(
+    await db.query(
       `UPDATE users SET last_login_at = CURRENT_TIMESTAMP WHERE username = $1 RETURNING last_login_at`,
       [username]
     );
@@ -65,6 +64,7 @@ class User {
       `SELECT username, first_name, last_name, phone
        FROM users`
     );
+    console.log(result);
 
     return result.rows;
   }
@@ -174,7 +174,6 @@ class User {
         }
       }
     });
-    console.log(messages);
 
     return messages;
   }

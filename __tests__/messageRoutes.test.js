@@ -3,10 +3,11 @@ const jwt = require("jsonwebtoken");
 
 const app = require("../app");
 const db = require("../db");
+const Message = require("../models/message");
 const User = require("../models/user");
 
 
-describe("Auth Routes Test", function () {
+describe("Messages Routes Test", function () {
 
     beforeEach(async function () {
         await db.query("DELETE FROM messages");
@@ -19,14 +20,29 @@ describe("Auth Routes Test", function () {
             last_name: "Testy1",
             phone: "+14155550000",
         });
+
+        let u2 = await User.register({
+            username: "test2",
+            password: "password",
+            first_name: "Test2",
+            last_name: "Testy2",
+            phone: "+14155555555",
+        });
+
+        let m1 = await Message.create({
+            from_username: 'test1',
+            to_username: 'test2', 
+            body: 'This is a test.'
+        });
+
     });
 
-    /** POST /auth/register => token  */
+    /** POST /messages/create => token  */
 
-    describe("POST /auth/register", function () {
-        test("can register", async function () {
+    describe("POST /messages/", function () {
+        test("can create message", async function () {
             let response = await request(app)
-                .post("/auth/register")
+                .post("/messages/")
                 .send({
                     username: "bob",
                     password: "secret",
